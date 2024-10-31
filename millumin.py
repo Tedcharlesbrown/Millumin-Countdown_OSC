@@ -87,11 +87,11 @@ def handle_launched_column(address, *args):
 # Handle /millumin/board/stoppedColumn message
 def handle_stopped_column(address, *args):
     global last_column_name, last_minutes, last_seconds, current_column_name
-    current_column_name = config["stopped_text"]  # Reset current column name
+    current_column_name = ""  # Reset current column name
     last_column_name, last_minutes, last_seconds = "", 0, 0  # Reset last sent values
 
 
-    send_osc_message(config["outgoing_address"], current_column_name, last_minutes, last_seconds)
+    send_osc_message(config["outgoing_address"], last_column_name, last_minutes, last_seconds)
 
 def send_osc_message(address, *args):
     print(f"Sending OSC to: {config["outgoing_ip"]}, Address: {config['outgoing_address']}, Data: {current_column_name}, {last_minutes}, {last_seconds}")
