@@ -1,4 +1,6 @@
 incoming_port=8001
 outgoing_address=/millumin/countdown
-outgoing_ip=192.168.101.255
-outgoing_port=10000
+outgoing_ip=192.168.101.255,127.0.0.1
+outgoing_port=10000,9000
+stopped_text=STOPPED
+countdown_loop=TRUE
