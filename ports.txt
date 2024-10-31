@@ -1,0 +1,4 @@
+incoming_port=8001
+outgoing_address=/millumin/countdown
+outgoing_ip=192.168.101.255
+outgoing_port=10000
