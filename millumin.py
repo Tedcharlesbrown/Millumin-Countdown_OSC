@@ -11,8 +11,6 @@ CONFIG_FILE = "ports.txt"
 config = {
     "incoming_port": 8001,
     "outgoing_address": "/millumin/countdown",
-    # "outgoing_ip": "127.0.0.1",
-    # "outgoing_port": 10000
     "outgoing_ip": "192.168.101.255",
     "outgoing_port": 10000
 }
@@ -49,8 +47,6 @@ def handle_media_time(address, *args):
     remaining_time = max(total_time - current_time, 0)
     minutes = int(remaining_time) // 60
     seconds = int(remaining_time) % 60
-
-    
 
     # Only print/send if there's a change
     if (current_column_name != last_column_name) or (minutes != last_minutes) or (seconds != last_seconds):
