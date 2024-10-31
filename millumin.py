@@ -67,8 +67,9 @@ def handle_media_time(address, *args):
     seconds = int(remaining_time) % 60
 
     if config["countdown_loop"].upper() == "FALSE":
-        minutes = 0
-        seconds = 0
+        if current_column_name.lower().find("loop") != -1:
+            minutes = 0
+            seconds = 0
 
     if (current_column_name != ""):
     # Only print/send if there's a change
@@ -84,14 +85,16 @@ def handle_launched_column(address, *args):
     column_index, column_name = args
     current_column_name = column_name  # Update current column name
 
+    send_osc_message(config["outgoing_address"], current_column_name, 0, 0)
+
 # Handle /millumin/board/stoppedColumn message
 def handle_stopped_column(address, *args):
     global last_column_name, last_minutes, last_seconds, current_column_name
-    current_column_name = ""  # Reset current column name
-    last_column_name, last_minutes, last_seconds = "", 0, 0  # Reset last sent values
+    if (current_column_name == last_column_name):
+        current_column_name = ""  # Reset current column name
+        last_column_name, last_minutes, last_seconds = "", 0, 0  # Reset last sent values
 
-
-    send_osc_message(config["outgoing_address"], last_column_name, last_minutes, last_seconds)
+        send_osc_message(config["outgoing_address"], config["stopped_text"], last_minutes, last_seconds)
 
 def send_osc_message(address, *args):
     print(f"Sending OSC to: {config["outgoing_ip"]}, Address: {config['outgoing_address']}, Data: {current_column_name}, {last_minutes}, {last_seconds}")
@@ -103,7 +106,7 @@ def set_osc_handlers():
     # Catch all layer media time messages regardless of the layer number
     osc_method("/millumin/layer:layer*/media/time", handle_media_time, argscheme=osm.OSCARG_ADDRESS + osm.OSCARG_DATAUNPACK)
     osc_method("/millumin/board/launchedColumn", handle_launched_column, argscheme=osm.OSCARG_ADDRESS + osm.OSCARG_DATAUNPACK)
-    osc_method("/millumin/board/stoppedColumn", handle_stopped_column, argscheme=osm.OSCARG_ADDRESS + osm.OSCARG_DATAUNPACK)
+    # osc_method("/millumin/board/stoppedColumn", handle_stopped_column, argscheme=osm.OSCARG_ADDRESS + osm.OSCARG_DATAUNPACK)
 
 # Main function
 def main():
